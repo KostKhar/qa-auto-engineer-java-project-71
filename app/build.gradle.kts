@@ -34,34 +34,28 @@ dependencies {
 }
 
 
-sonar {
-  properties {
-    property("sonar.projectKey", "cicdpiplinetohell_qa-auto-engineer-java-project-71")
-    property("sonar.organization", "cicdpiplinetohell")
-  }
-}
-
 jacoco {
     toolVersion = "0.8.14"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
 }
 
 tasks.test {
+    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
-}
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
 }
 
 tasks.jacocoTestReport {
+    dependsOn(tasks.test)
     reports {
-        xml.required = false
+        xml.required = true
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
 
-
-tasks.test {
-    useJUnitPlatform()
+sonar {
+  properties {
+    property("sonar.projectKey", "cicdpiplinetohell_qa-auto-engineer-java-project-71")
+    property("sonar.organization", "cicdpiplinetohell")
+    property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
+  }
 }

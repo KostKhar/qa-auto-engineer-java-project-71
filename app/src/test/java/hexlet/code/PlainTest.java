@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlainTest extends BaseTest {
 
-    String getResultFromTwoPaths(String file1, String file2) {
+    String generateDiff(String file1, String file2) {
         Map<String, Object> data1 = parse(file1);
         Map<String, Object> data2 = parse(file2);
         return Plain.generateDiff(data1, data2);
@@ -51,7 +51,7 @@ class PlainTest extends BaseTest {
 
     @Test
     void generateDiff_oneEmptyJsonFile() {
-        String result = getResultFromTwoPaths(file1Json, file3Empty);
+        String result = generateDiff(file1Json, file3Empty);
         assertAll(
                 () -> assertTrue(result.contains("Property 'description' was removed")),
                 () -> assertTrue(result.contains("Property 'field' was removed")),
@@ -64,12 +64,12 @@ class PlainTest extends BaseTest {
 
     @Test
     void generateDiff_twoEmptyJsonFiles() {
-        assertEquals("{\n}", getResultFromTwoPaths(file3Empty, file3Empty));
+        assertEquals("{\n}", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void generateDiff_equalJsonFiles() {
-        assertEquals("{\n}", getResultFromTwoPaths(file1Json, file1Json));
+        assertEquals("{\n}", generateDiff(file1Json, file1Json));
     }
 
     @Test
@@ -96,7 +96,7 @@ class PlainTest extends BaseTest {
 
     @Test
     void generateDiff_oneEmptyYmlFile() {
-        String result = getResultFromTwoPaths(file1Yml, file3Empty);
+        String result = generateDiff(file1Yml, file3Empty);
         assertAll(
                 () -> assertTrue(result.contains("Property 'address' was removed")),
                 () -> assertTrue(result.contains("Property 'age' was removed")),
@@ -107,17 +107,17 @@ class PlainTest extends BaseTest {
 
     @Test
     void generateDiff_twoEmptyYmlFiles() {
-        assertEquals("{\n}", getResultFromTwoPaths(file3Empty, file3Empty));
+        assertEquals("{\n}", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void generateDiff_equalYmlFiles() {
-        assertEquals("{\n}", getResultFromTwoPaths(file1Yml, file1Yml));
+        assertEquals("{\n}", generateDiff(file1Yml, file1Yml));
     }
 
     @Test
     void checkInvalidJsonThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> getResultFromTwoPaths(file1Json, file4InvalidJson));
+                () -> generateDiff(file1Json, file4InvalidJson));
     }
 }

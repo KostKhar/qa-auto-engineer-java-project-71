@@ -12,7 +12,7 @@ class DifferTest extends BaseTest {
 
 
     @Override
-    String getResultFromTwoPaths(String file1, String file2) {
+    String generateDiff(String file1, String file2) {
         try {
             return Differ.generate(file1, file2, DEFAULT_FORMAT);
         } catch (Exception e) {
