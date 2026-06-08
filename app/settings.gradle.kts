@@ -1,1 +1,1 @@
-rootProject.name = "app"
+rootProject.name = "qa-auto-engineer-java-project-71.app"

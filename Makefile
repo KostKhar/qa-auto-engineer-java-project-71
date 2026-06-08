@@ -20,7 +20,7 @@ install:
 	./gradlew clean install
 
 run-dist:
-	./app/build/install/java-package/bin/java-package
+	app/build/install/qa-auto-engineer-java-project-71.app/bin/qa-auto-engineer-java-project-71.app
 
 run:
 	./gradlew run
