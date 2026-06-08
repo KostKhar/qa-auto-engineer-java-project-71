@@ -29,9 +29,9 @@ class JsonFormatterTest extends BaseTest {
                   "field" : null,
                   "main" : "index.js",
                   "name" : "resources",
-                  "private" : "falsetrue",
+                  "private" : "false, true",
                   "proxy" : "123.234.53.22",
-                  "timeout" : "2050",
+                  "timeout" : "20, 50",
                   "version" : "1.0.0"
                 }""";
         assertEquals(expected, resultJson);
@@ -95,15 +95,15 @@ class JsonFormatterTest extends BaseTest {
 
     @Test
     void checkYmlFiles_containsChangedAndUnchangedFields() {
+        System.out.println(resultYml);
         assertAll(
                 () -> assertTrue(resultYml.contains("\"email\" : \"john@example.com\"")),
-                () -> assertTrue(resultYml.contains("\"age\" : \"3020\"")),
-                () -> assertTrue(resultYml.contains("\"name\" : \"John DoeJohn\"")),
+                () -> assertTrue(resultYml.contains("\"age\" : \"30, 20\"")),
+                () -> assertTrue(resultYml.contains("\"name\" : \"John Doe, John\"")),
                 () -> assertTrue(resultYml.contains(
-                        "\"address\" : \"{street=Main St, city=New York, zip=10001}"
-                                + "{street=Steals St, city=New York, zip=10001}\"")),
+                        "\"address\" : \"{street=Main St, city=New York, zip=10001}, {street=Steals St, city=New York, zip=10001}\"")),
                 () -> assertTrue(resultYml.contains(
-                        "\"hobbies\" : \"[reading, swimming, coding][reading, coding]\"")));
+                        "\"hobbies\" : \"[reading, swimming, coding], [reading, coding]\"")));
     }
 
     @Test

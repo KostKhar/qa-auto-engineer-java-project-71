@@ -49,7 +49,7 @@ public final class JsonFormatter {
         Object value2 = data2.get(key);
 
         if (!Objects.equals(value1, value2)) {
-            return value1 + " -> " + value2;
+            return value1 + ", " + value2;
         }
         return value1;
     }

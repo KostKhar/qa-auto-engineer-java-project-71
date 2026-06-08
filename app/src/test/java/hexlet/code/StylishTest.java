@@ -26,8 +26,8 @@ class StylishTest extends BaseTest {
     @Test
     void generateDiff_jsonFiles_returnsExpectedDiff() {
         String expected = """
-                  {
-                  - description:
+                {
+                  - description:\s
                   - field: null
                     main: index.js
                     name: resources
@@ -70,8 +70,8 @@ class StylishTest extends BaseTest {
     @Test
     void generateDiff_equalJsonFiles() {
         String expected = """
-                    {
-                    description:
+                {
+                    description:\s
                     field: null
                     main: index.js
                     name: resources
