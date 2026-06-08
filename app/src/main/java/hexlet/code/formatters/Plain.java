@@ -7,7 +7,10 @@ import java.util.TreeSet;
 
 public final class Plain {
 
-    private static final String PROPERTY = "Property '";
+    private static final String PROPERTY_WAS_UPDATED = "Property '%s' was updated. From %s to %s";
+    private static final String PROPERTY_WAS_ADDED= "Property '%s' was added  with value: %s";
+    private static final String PROPERTY_WAS_DELETED = "Property '%s' was removed";
+
 
     private Plain() {
     }
@@ -16,7 +19,7 @@ public final class Plain {
         Set<String> allKeys = new TreeSet<>();
         allKeys.addAll(data1.keySet());
         allKeys.addAll(data2.keySet());
-        StringBuilder diff = new StringBuilder("{\n");
+        StringBuilder diff = new StringBuilder();
 
         for (String key : allKeys) {
             if (!data1.containsKey(key)) {
@@ -31,33 +34,32 @@ public final class Plain {
             }
         }
 
-        diff.append("}");
         return diff.toString();
     }
 
     private static String formatKeyWithOtherValue(String key, Object oldValue, Object newValue) {
-        if (!(oldValue instanceof String)) {
-            oldValue = formatValue(oldValue);
-        }
-
-        if (!(newValue instanceof String)) {
-            newValue = formatValue(newValue);
-        }
-        return PROPERTY + key + "' was updated. From " + oldValue + " to " + newValue;
+        return String.format(PROPERTY_WAS_UPDATED, key,
+                formatValue(oldValue),
+                formatValue(newValue));
     }
 
     private static String formatKeyWasRemoved(String key) {
-        return PROPERTY + key + "' was removed";
+        return String.format(PROPERTY_WAS_DELETED, key);
     }
 
     private static String formatKeyWasAdded(String key, Object value) {
-        if (!(value instanceof String)) {
-            value = formatValue(value);
-        }
-        return PROPERTY + key + "' was added with value: " + value;
+        return String.format(PROPERTY_WAS_ADDED, key, formatValue(value));
     }
 
     private static String formatValue(Object value) {
-        return String.valueOf(value);
+        if (value instanceof String) {
+            return String.format("'%s'", value);
+        } else if (value instanceof Number || value instanceof Boolean) {
+            return String.valueOf(value);
+        } else if (value == null) {
+            return "null";
+        } else {
+            return "[complex value]";
+        }
     }
 }

@@ -24,13 +24,13 @@ class PlainTest extends BaseTest {
     @Test
     void generateDiff_jsonFiles_returnsExpectedDiff() {
         String expected = """
-                {
                 Property 'description' was removed
                 Property 'field' was removed
                 Property 'private' was updated. From false to true
                 Property 'proxy' was added with value: 123.234.53.22
                 Property 'timeout' was updated. From 20 to 50
-                }""";
+                """;
+        System.out.println(resultJson);
         assertEquals(expected, resultJson);
     }
 
@@ -64,12 +64,12 @@ class PlainTest extends BaseTest {
 
     @Test
     void generateDiff_twoEmptyJsonFiles() {
-        assertEquals("{\n}", generateDiff(file3Empty, file3Empty));
+        assertEquals("", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void generateDiff_equalJsonFiles() {
-        assertEquals("{\n}", generateDiff(file1Json, file1Json));
+        assertEquals("", generateDiff(file1Json, file1Json));
     }
 
     @Test
@@ -80,12 +80,12 @@ class PlainTest extends BaseTest {
     @Test
     void generateDiff_ymlFiles_returnsExpectedDiff() {
         String expected = """
-                {
-                Property 'address' was updated. From {street=Main St, city=New York, zip=10001} to {street=Steals St, city=New York, zip=10001}
+                Property 'address' was updated. From [complex value] to [complex value]
                 Property 'age' was updated. From 30 to 20
-                Property 'hobbies' was updated. From [reading, swimming, coding] to [reading, coding]
+                Property 'hobbies' was updated. From [complex value] to [complex value]
                 Property 'name' was updated. From John Doe to John
-                }""";
+                """;
+        System.out.println(resultYml);
         assertEquals(expected, resultYml);
     }
 
@@ -107,12 +107,12 @@ class PlainTest extends BaseTest {
 
     @Test
     void generateDiff_twoEmptyYmlFiles() {
-        assertEquals("{\n}", generateDiff(file3Empty, file3Empty));
+        assertEquals("", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void generateDiff_equalYmlFiles() {
-        assertEquals("{\n}", generateDiff(file1Yml, file1Yml));
+        assertEquals("", generateDiff(file1Yml, file1Yml));
     }
 
     @Test
