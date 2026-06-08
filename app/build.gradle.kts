@@ -30,9 +30,17 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:$picocliVersion")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+
+
+checkstyle {
+    configProperties["org.checkstyle.google.suppressionfilter.config"] =
+        "${project.rootDir}/config/checkstyle/checkstyle-suppressions.xml"
+}
 
 jacoco {
     toolVersion = "0.8.14"
@@ -47,8 +55,6 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
         xml.required = true
-        csv.required = true
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
 

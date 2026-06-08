@@ -246,7 +246,7 @@ class DifferTest extends BaseTest {
 
     @Test
     void generate_ymlFiles_json_doesNotContainStylishMarkers() {
-        String result = Differ.generate(file1Yml, file2Yml,JSON_FORMAT);
+        String result = Differ.generate(file1Yml, file2Yml, JSON_FORMAT);
         assertAll(
                 () -> assertFalse(result.contains("+ ")),
                 () -> assertFalse(result.contains("- ")));
