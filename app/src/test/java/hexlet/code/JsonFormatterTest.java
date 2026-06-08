@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonFormatterTest extends BaseTest {
 
-    String getResultFromTwoPaths(String file1, String file2) {
+    String generateDiff(String file1, String file2) {
         Map<String, Object> data1 = parse(file1);
         Map<String, Object> data2 = parse(file2);
         return JsonFormatter.generateDiff(data1, data2);
@@ -54,7 +54,7 @@ class JsonFormatterTest extends BaseTest {
 
     @Test
     void checkOneEmptyJsonFile() {
-        String result = getResultFromTwoPaths(file1Json, file3Empty);
+        String result = generateDiff(file1Json, file3Empty);
         String expected = """
                 {
                   "description" : "",
@@ -70,7 +70,7 @@ class JsonFormatterTest extends BaseTest {
 
     @Test
     void checkTwoEmptyJsonFiles() {
-        assertEquals("{ }", getResultFromTwoPaths(file3Empty, file3Empty));
+        assertEquals("{ }", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
@@ -85,7 +85,7 @@ class JsonFormatterTest extends BaseTest {
                   "timeout" : 20,
                   "version" : "1.0.0"
                 }""";
-        assertEquals(expected, getResultFromTwoPaths(file1Json, file1Json));
+        assertEquals(expected, generateDiff(file1Json, file1Json));
     }
 
     @Test
@@ -115,7 +115,7 @@ class JsonFormatterTest extends BaseTest {
 
     @Test
     void checkOneEmptyYmlFile() {
-        String result = getResultFromTwoPaths(file1Yml, file3Empty);
+        String result = generateDiff(file1Yml, file3Empty);
         assertAll(
                 () -> assertTrue(result.contains("\"name\" : \"John Doe\"")),
                 () -> assertTrue(result.contains("\"age\" : 30")),
@@ -126,12 +126,12 @@ class JsonFormatterTest extends BaseTest {
 
     @Test
     void checkTwoEmptyYmlFiles() {
-        assertEquals("{ }", getResultFromTwoPaths(file3Empty, file3Empty));
+        assertEquals("{ }", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void checkEqualYmlFiles() {
-        String result = getResultFromTwoPaths(file1Yml, file1Yml);
+        String result = generateDiff(file1Yml, file1Yml);
         assertAll(
                 () -> assertTrue(result.contains("\"name\" : \"John Doe\"")),
                 () -> assertTrue(result.contains("\"age\" : 30")),
@@ -143,6 +143,6 @@ class JsonFormatterTest extends BaseTest {
     @Test
     void checkInvalidJsonThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> getResultFromTwoPaths(file1Json, file4InvalidJson));
+                () -> generateDiff(file1Json, file4InvalidJson));
     }
 }

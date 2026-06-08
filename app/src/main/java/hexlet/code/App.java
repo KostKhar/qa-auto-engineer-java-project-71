@@ -9,11 +9,11 @@ import java.util.concurrent.Callable;
 class App implements Callable<Integer> {
 
     @CommandLine.Option(names = {"-f", "--format"}, description = "output format [default: stylish]", paramLabel = "formatName")
-    private static final String FORMAT_NAME = "stylish";
+    private String formatName = "stylish";
     @CommandLine.Option(names = {"-h", "--help"}, usageHelp = true, description = "Show this help message and exit.")
-    private static final boolean HELP = false;
+    private boolean help = false;
     @CommandLine.Option(names = {"-V", "--version"}, versionHelp = true, description = "Print version information and exit.")
-    private static final boolean VERSION = false;
+    private boolean version = false;
     @CommandLine.Parameters(index = "0", description = "path to first file", paramLabel = "filepath1")
     private String filepath1;
     @CommandLine.Parameters(index = "1", description = "path to second file", paramLabel = "filepath2")
@@ -27,7 +27,7 @@ class App implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            var diff = Differ.generate(filepath1, filepath2, FORMAT_NAME);
+            var diff = Differ.generate(filepath1, filepath2, formatName);
             System.out.println(diff);
 
             return 1;
