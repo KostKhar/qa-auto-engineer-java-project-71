@@ -97,13 +97,12 @@ class DifferTest extends BaseTest {
     @Test
     void generate_jsonFiles_plain_returnsExpectedDiff() {
         String expected = """
-                {
                 Property 'description' was removed
                 Property 'field' was removed
                 Property 'private' was updated. From false to true
-                Property 'proxy' was added with value: 123.234.53.22
+                Property 'proxy' was added  with value: '123.234.53.22'
                 Property 'timeout' was updated. From 20 to 50
-                }""";
+                """;
         assertEquals(expected, Differ.generate(file1Json, file2Json, PLAIN_FORMAT));
     }
 
@@ -131,12 +130,12 @@ class DifferTest extends BaseTest {
 
     @Test
     void generate_twoEmptyJsonFiles_plain_returnsEmptyBraces() {
-        assertEquals("{\n}", Differ.generate(file3Empty, file3Empty, PLAIN_FORMAT));
+        assertEquals("", Differ.generate(file3Empty, file3Empty, PLAIN_FORMAT));
     }
 
     @Test
     void generate_equalJsonFiles_plain_returnsEmptyBraces() {
-        assertEquals("{\n}", Differ.generate(file1Json, file1Json, PLAIN_FORMAT));
+        assertEquals("", Differ.generate(file1Json, file1Json, PLAIN_FORMAT));
     }
 
     @Test
@@ -220,12 +219,11 @@ class DifferTest extends BaseTest {
     @Test
     void generate_ymlFiles_plain_returnsExpectedDiff() {
         String expected = """
-                {
-                Property 'address' was updated. From {street=Main St, city=New York, zip=10001} to {street=Steals St, city=New York, zip=10001}
+                Property 'address' was updated. From [complex value] to [complex value]
                 Property 'age' was updated. From 30 to 20
-                Property 'hobbies' was updated. From [reading, swimming, coding] to [reading, coding]
-                Property 'name' was updated. From John Doe to John
-                }""";
+                Property 'hobbies' was updated. From [complex value] to [complex value]
+                Property 'name' was updated. From 'John Doe' to 'John'
+                """;
         assertEquals(expected, Differ.generate(file1Yml, file2Yml, PLAIN_FORMAT));
     }
 
@@ -236,7 +234,7 @@ class DifferTest extends BaseTest {
 
     @Test
     void generate_equalYmlFiles_plain_returnsEmptyBraces() {
-        assertEquals("{\n}", Differ.generate(file1Yml, file1Yml, PLAIN_FORMAT));
+        assertEquals("", Differ.generate(file1Yml, file1Yml, PLAIN_FORMAT));
     }
 
     @Test
