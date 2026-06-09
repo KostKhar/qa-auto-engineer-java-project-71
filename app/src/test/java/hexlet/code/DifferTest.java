@@ -100,7 +100,7 @@ class DifferTest extends BaseTest {
                 Property 'description' was removed
                 Property 'field' was removed
                 Property 'private' was updated. From false to true
-                Property 'proxy' was added  with value: '123.234.53.22'
+                Property 'proxy' was added with value: '123.234.53.22'
                 Property 'timeout' was updated. From 20 to 50""";
         assertEquals(expected, Differ.generate(file1Json, file2Json, PLAIN_FORMAT));
     }
