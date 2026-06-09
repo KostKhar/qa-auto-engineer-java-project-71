@@ -28,8 +28,9 @@ class PlainTest extends BaseTest {
                 Property 'field' was removed
                 Property 'private' was updated. From false to true
                 Property 'proxy' was added  with value: '123.234.53.22'
-                Property 'timeout' was updated. From 20 to 50
-                """;
+                Property 'timeout' was updated. From 20 to 50""";
+        System.out.println(resultJson);
+
         assertEquals(expected, resultJson);
     }
 
@@ -82,8 +83,8 @@ class PlainTest extends BaseTest {
                 Property 'address' was updated. From [complex value] to [complex value]
                 Property 'age' was updated. From 30 to 20
                 Property 'hobbies' was updated. From [complex value] to [complex value]
-                Property 'name' was updated. From 'John Doe' to 'John'
-                """;
+                Property 'name' was updated. From 'John Doe' to 'John'""";
+        System.out.println(resultYml);
         assertEquals(expected, resultYml);
     }
 

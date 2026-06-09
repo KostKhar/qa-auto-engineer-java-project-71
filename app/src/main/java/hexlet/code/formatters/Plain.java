@@ -24,14 +24,15 @@ public final class Plain {
         for (String key : allKeys) {
             if (!data1.containsKey(key)) {
                 diff.append(formatKeyWasAdded(key, data2.get(key))).append("\n");
-
             } else if (!data2.containsKey(key)) {
                 diff.append(formatKeyWasRemoved(key)).append("\n");
-
             } else if (!Objects.equals(data1.get(key), data2.get(key))) {
-                diff.append(formatKeyWithOtherValue(key, data1.get(key), data2.get(key)))
-                        .append("\n");
+                diff.append(formatKeyWithOtherValue(key, data1.get(key), data2.get(key))).append("\n");
             }
+        }
+
+        if (diff.toString().endsWith("\n") || diff.toString().endsWith("\r\n")) {
+            return diff.substring(0, diff.length() - 1);
         }
 
         return diff.toString();
