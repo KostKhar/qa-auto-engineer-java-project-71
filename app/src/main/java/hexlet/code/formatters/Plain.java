@@ -7,57 +7,53 @@ import java.util.TreeSet;
 
 public final class Plain {
 
-    private static final String PROPERTY = "Property '";
+    private static final String PROPERTY_WAS_UPDATED = "Property '%s' was updated. From %s to %s";
+    private static final String PROPERTY_WAS_ADDED = "Property '%s' was added with value: %s";
+    private static final String PROPERTY_WAS_DELETED = "Property '%s' was removed";
+
 
     private Plain() {
     }
 
     public static String generateDiff(Map<String, Object> data1, Map<String, Object> data2) {
-        Set<String> allKeys = new TreeSet<>();
-        allKeys.addAll(data1.keySet());
+        Set<String> allKeys = new TreeSet<>(data1.keySet());
         allKeys.addAll(data2.keySet());
-        StringBuilder diff = new StringBuilder("{\n");
+        StringBuilder diff = new StringBuilder();
 
         for (String key : allKeys) {
-            if (!data1.containsKey(key)) {
-                diff.append(formatKeyWasAdded(key, data2.get(key))).append("\n");
-
-            } else if (!data2.containsKey(key)) {
-                diff.append(formatKeyWasRemoved(key)).append("\n");
-
-            } else if (!Objects.equals(data1.get(key), data2.get(key))) {
-                diff.append(formatKeyWithOtherValue(key, data1.get(key), data2.get(key)))
-                        .append("\n");
+            String line = formatKey(key, data1, data2);
+            if (line != null) {
+                diff.append(line).append("\n");
             }
         }
 
-        diff.append("}");
-        return diff.toString();
+        String result = diff.toString();
+        if (result.endsWith("\n")) {
+            return result.substring(0, result.length() - 1);
+        }
+        return result;
     }
 
-    private static String formatKeyWithOtherValue(String key, Object oldValue, Object newValue) {
-        if (!(oldValue instanceof String)) {
-            oldValue = formatValue(oldValue);
+    private static String formatKey(String key, Map<String, Object> data1, Map<String, Object> data2) {
+        if (!data1.containsKey(key)) {
+            return String.format(PROPERTY_WAS_ADDED, key, formatValue(data2.get(key)));
+        } else if (!data2.containsKey(key)) {
+            return String.format(PROPERTY_WAS_DELETED, key);
+        } else if (!Objects.equals(data1.get(key), data2.get(key))) {
+            return String.format(PROPERTY_WAS_UPDATED, key, formatValue(data1.get(key)), formatValue(data2.get(key)));
         }
-
-        if (!(newValue instanceof String)) {
-            newValue = formatValue(newValue);
-        }
-        return PROPERTY + key + "' was updated. From " + oldValue + " to " + newValue;
-    }
-
-    private static String formatKeyWasRemoved(String key) {
-        return PROPERTY + key + "' was removed";
-    }
-
-    private static String formatKeyWasAdded(String key, Object value) {
-        if (!(value instanceof String)) {
-            value = formatValue(value);
-        }
-        return PROPERTY + key + "' was added with value: " + value;
+        return null;
     }
 
     private static String formatValue(Object value) {
-        return String.valueOf(value);
+        if (value instanceof String) {
+            return String.format("'%s'", value);
+        } else if (value instanceof Number || value instanceof Boolean) {
+            return String.valueOf(value);
+        } else if (value == null) {
+            return "null";
+        } else {
+            return "[complex value]";
+        }
     }
 }

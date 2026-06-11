@@ -9,11 +9,11 @@ import java.util.concurrent.Callable;
 class App implements Callable<Integer> {
 
     @CommandLine.Option(names = {"-f", "--format"}, description = "output format [default: stylish]", paramLabel = "formatName")
-    private  String formatName = "stylish";
+    private String formatName = "stylish";
     @CommandLine.Option(names = {"-h", "--help"}, usageHelp = true, description = "Show this help message and exit.")
-    private  boolean help = false;
+    private boolean help = false;
     @CommandLine.Option(names = {"-V", "--version"}, versionHelp = true, description = "Print version information and exit.")
-    private  boolean version = false;
+    private boolean version = false;
     @CommandLine.Parameters(index = "0", description = "path to first file", paramLabel = "filepath1")
     private String filepath1;
     @CommandLine.Parameters(index = "1", description = "path to second file", paramLabel = "filepath2")

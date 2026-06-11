@@ -7,8 +7,9 @@ plugins {
 }
 
 application {
-    mainClass = "hexlet.code.App"
+ mainClass = "hexlet.code.App"
 }
+
 
 group = "hexlet.code"
 version = "1.0-SNAPSHOT"
@@ -29,38 +30,38 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:$picocliVersion")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+
+
+checkstyle {
+    configProperties["org.checkstyle.google.suppressionfilter.config"] =
+        "${project.rootDir}/config/checkstyle/checkstyle-suppressions.xml"
+}
+
+jacoco {
+    toolVersion = "0.8.14"
+}
+
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+    }
+}
 
 sonar {
   properties {
     property("sonar.projectKey", "cicdpiplinetohell_qa-auto-engineer-java-project-71")
     property("sonar.organization", "cicdpiplinetohell")
+    property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
   }
-}
-
-jacoco {
-    toolVersion = "0.8.14"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
-}
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-}
-
-tasks.jacocoTestReport {
-    reports {
-        xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
-    }
-}
-
-
-tasks.test {
-    useJUnitPlatform()
 }

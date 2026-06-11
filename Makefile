@@ -8,46 +8,45 @@ endif
 .DEFAULT_GOAL := build-run
 
 setup:
-	./gradlew wrapper --gradle-version 9.2.1
+	cd app &&  ./gradlew wrapper --gradle-version 8.13
 
 clean:
-	./gradlew clean
+	cd app &&  ./gradlew clean
 
 build:
-	./gradlew clean build
+	cd app &&  ./gradlew clean build
 
 install:
-	./gradlew clean install
+	cd app && ./gradlew  clean installDist --no-daemon
 
 run-dist:
-	./build/install/java-package/bin/java-package
-
+	cd app && ./build/install/app/bin/app
 run:
-	./gradlew run
+	cd app && ./gradlew run
 
 test:
-	./gradlew test
+	cd app && ./gradlew test
 
 report:
-	./gradlew jacocoTestReport
+	cd app && ./gradlew jacocoTestReport
 
 lint:
-	./gradlew spotlessApply
+	cd app && ./gradlew spotlessApply
 
 update-deps:
-	./gradlew refreshVersions
+	cd app && ./gradlew refreshVersions
 
 json-formatter-play:
-	asciinema play ./app/src/main/resources/jsonDiff.cast
+	cd app && asciinema play ./app/src/main/resources/jsonDiff.cast
 
 plain-formatter-play:
-	asciinema play ./app/src/main/resources/plainDiff.cast
+	cd app && asciinema play ./app/src/main/resources/plainDiff.cast
 
 stylish-formatter-play:
-	asciinema play ./app/src/main/resources/stylishDiff.cast
+	cd app && asciinema play ./app/src/main/resources/stylishDiff.cast
 
 yml-formatter-play:
-	asciinema play ./app/src/main/resources/ymlDiff.cast
+	cd app && asciinema play ./app/src/main/resources/ymlDiff.cast
 
 
 build-run: build run

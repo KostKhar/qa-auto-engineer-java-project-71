@@ -15,10 +15,10 @@ abstract class BaseTest {
 
     @BeforeEach
     void setUp() {
-        resultJson = getResultFromTwoPaths(file1Json, file2Json);
-        resultYml = getResultFromTwoPaths(file1Yml, file2Yml);
+        resultJson = generateDiff(file1Json, file2Json);
+        resultYml = generateDiff(file1Yml, file2Yml);
     }
 
-    abstract String getResultFromTwoPaths(String file1, String file2);
+    abstract String generateDiff(String file1, String file2);
 
 }

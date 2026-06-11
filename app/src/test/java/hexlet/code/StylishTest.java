@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class StylishTest extends BaseTest {
 
 
-    String getResultFromTwoPaths(String file1, String file2) {
+    String generateDiff(String file1, String file2) {
         Map<String, Object> data1 = parse(file1);
         Map<String, Object> data2 = parse(file2);
         return Stylish.generateDiff(data1, data2);
@@ -26,8 +26,8 @@ class StylishTest extends BaseTest {
     @Test
     void generateDiff_jsonFiles_returnsExpectedDiff() {
         String expected = """
-                  {
-                  - description:
+                {
+                  - description:\s
                   - field: null
                     main: index.js
                     name: resources
@@ -51,7 +51,7 @@ class StylishTest extends BaseTest {
 
     @Test
     void generateDiff_oneEmptyJsonFile() {
-        String result = getResultFromTwoPaths(file1Json, file3Empty);
+        String result = generateDiff(file1Json, file3Empty);
         assertAll(
                 () -> assertTrue(result.contains("  - description: ")),
                 () -> assertTrue(result.contains("  - field: null")),
@@ -64,14 +64,14 @@ class StylishTest extends BaseTest {
 
     @Test
     void generateDiff_twoEmptyJsonFiles() {
-        assertEquals("{\n}", getResultFromTwoPaths(file3Empty, file3Empty));
+        assertEquals("{\n}", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void generateDiff_equalJsonFiles() {
         String expected = """
-                    {
-                    description:
+                {
+                    description:\s
                     field: null
                     main: index.js
                     name: resources
@@ -79,7 +79,7 @@ class StylishTest extends BaseTest {
                     timeout: 20
                     version: 1.0.0
                 }""";
-        assertEquals(expected, getResultFromTwoPaths(file1Json, file1Json));
+        assertEquals(expected, generateDiff(file1Json, file1Json));
     }
 
     @Test
@@ -113,7 +113,7 @@ class StylishTest extends BaseTest {
 
     @Test
     void generateDiff_oneEmptyYmlFile() {
-        String result = getResultFromTwoPaths(file1Yml, file3Empty);
+        String result = generateDiff(file1Yml, file3Empty);
         assertAll(
                 () -> assertTrue(result.contains("  - address: {street=Main St, city=New York, zip=10001}")),
                 () -> assertTrue(result.contains("  - age: 30")),
@@ -124,7 +124,7 @@ class StylishTest extends BaseTest {
 
     @Test
     void generateDiff_twoEmptyYmlFiles() {
-        assertEquals("{\n}", getResultFromTwoPaths(file3Empty, file3Empty));
+        assertEquals("{\n}", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
@@ -137,7 +137,7 @@ class StylishTest extends BaseTest {
                     hobbies: [reading, swimming, coding]
                     name: John Doe
                 }""";
-        assertEquals(expected, getResultFromTwoPaths(file1Yml, file1Yml));
+        assertEquals(expected, generateDiff(file1Yml, file1Yml));
     }
 
     @Test
@@ -226,7 +226,7 @@ class StylishTest extends BaseTest {
     @Test
     void checkInvalidJsonThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> getResultFromTwoPaths(file1Json, file4InvalidJson));
+                () -> generateDiff(file1Json, file4InvalidJson));
     }
 
 }
