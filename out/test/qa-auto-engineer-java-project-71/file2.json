@@ -1,8 +1,0 @@
-{
-  "name": "resources",
-  "version": "1.0.0",
-  "proxy": "123.234.53.22",
-  "timeout": 50,
-  "main": "index.js",
-  "private": true
-}

@@ -30,8 +30,8 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:$picocliVersion")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -46,6 +46,7 @@ jacoco {
     toolVersion = "0.8.14"
 }
 
+
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
@@ -55,6 +56,7 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
         xml.required = true
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
 
