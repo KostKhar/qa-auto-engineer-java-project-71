@@ -2,7 +2,7 @@ plugins {
     id("java")
     application
     checkstyle
-    id ("org.sonarqube") version ("7.3.0.8198")
+    id("org.sonarqube") version "7.3.1.8318"
     jacoco
 }
 
@@ -30,8 +30,8 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:$picocliVersion")
 
     testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -46,6 +46,7 @@ jacoco {
     toolVersion = "0.8.14"
 }
 
+
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
@@ -55,13 +56,13 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
         xml.required = true
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
 
 sonar {
-  properties {
-    property("sonar.projectKey", "cicdpiplinetohell_qa-auto-engineer-java-project-71")
-    property("sonar.organization", "cicdpiplinetohell")
-    property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
-  }
+    properties {
+        property("sonar.projectKey", "KostKhar_qa-auto-engineer-java-project-71")
+        property("sonar.organization", "kostkhar")
+         }
 }

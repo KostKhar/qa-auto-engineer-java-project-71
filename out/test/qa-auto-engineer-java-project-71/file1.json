@@ -1,9 +1,0 @@
-{
-  "name": "resources",
-  "version": "1.0.0",
-  "description": "",
-  "timeout": 20,
-  "field": null,
-  "main": "index.js",
-  "private": false
-}
