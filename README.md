@@ -1,8 +1,7 @@
 ### Hexlet tests and linter status:
 [![hexlet-check](https://github.com/KostKhar/qa-auto-engineer-java-project-71/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/KostKhar/qa-auto-engineer-java-project-71/actions/workflows/hexlet-check.yml)
 [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=KostKhar_qa-auto-engineer-java-project-71)
-[![Maintainability](https://qlty.sh/gh/KostKhar/projects/qa-auto-engineer-java-project-71/maintainability.svg)](https://qlty.sh/gh/KostKhar/projects/qa-auto-engineer-java-project-71)
-[![Code Coverage](https://qlty.sh/gh/KostKhar/projects/qa-auto-engineer-java-project-71/coverage.svg)](https://qlty.sh/gh/KostKhar/projects/qa-auto-engineer-java-project-71)
+
 ## Утилита `gendiff`:
 
 Консольная утилита `gendiff`. 
