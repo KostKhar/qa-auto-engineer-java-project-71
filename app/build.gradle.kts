@@ -2,7 +2,7 @@ plugins {
     id("java")
     application
     checkstyle
-    id ("org.sonarqube") version ("7.3.0.8198")
+    id("org.sonarqube") version "7.3.1.8318"
     jacoco
 }
 
@@ -61,9 +61,8 @@ tasks.jacocoTestReport {
 }
 
 sonar {
-  properties {
-    property("sonar.projectKey", "cicdpiplinetohell_qa-auto-engineer-java-project-71")
-    property("sonar.organization", "cicdpiplinetohell")
-    property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
-  }
+    properties {
+        property("sonar.projectKey", "KostKhar_qa-auto-engineer-java-project-71")
+        property("sonar.organization", "kostkhar")
+         }
 }
