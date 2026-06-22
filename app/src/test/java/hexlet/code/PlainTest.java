@@ -3,6 +3,7 @@ package hexlet.code;
 import hexlet.code.formatters.Plain;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static hexlet.code.FileParser.parse;
@@ -118,5 +119,16 @@ class PlainTest extends BaseTest {
     void checkInvalidJsonThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> generateDiff(file1Json, file4InvalidJson));
+    }
+
+    @Test
+    void generateDiff_addedNullValue_formatsAsNull() {
+        Map<String, Object> data1 = Map.of();
+        Map<String, Object> data2 = new LinkedHashMap<>();
+        data2.put("field", null);
+
+        assertEquals(
+                "Property 'field' was added with value: null",
+                Plain.generateDiff(data1, data2));
     }
 }
