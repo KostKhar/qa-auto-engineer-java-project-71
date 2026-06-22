@@ -27,7 +27,7 @@ class App implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            var diff = Formatter.generate(filepath1, filepath2, formatName);
+            var diff = Differ.generate(filepath1, filepath2, formatName);
             System.out.println(diff);
 
             return 1;

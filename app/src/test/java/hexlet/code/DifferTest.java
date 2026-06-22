@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FormatterTest extends BaseTest {
+class DifferTest extends BaseTest {
 
     private static final String DEFAULT_FORMAT = "stylish";
     private static final String PLAIN_FORMAT = "plain";
