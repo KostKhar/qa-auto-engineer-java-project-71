@@ -1,6 +1,6 @@
 package hexlet.code;
 
-import hexlet.code.formatters.JsonFormatter;
+import hexlet.code.formatters.Json;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -8,12 +8,12 @@ import java.util.Map;
 import static hexlet.code.FileParser.parse;
 import static org.junit.jupiter.api.Assertions.*;
 
-class JsonFormatterTest extends BaseTest {
+class JsonTest extends BaseTest {
 
     String generateDiff(String file1, String file2) {
         Map<String, Object> data1 = parse(file1);
         Map<String, Object> data2 = parse(file2);
-        return JsonFormatter.generateDiff(data1, data2);
+        return Json.generateDiff(data1, data2);
     }
 
     @Test

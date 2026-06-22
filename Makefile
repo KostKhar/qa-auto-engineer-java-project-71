@@ -37,16 +37,16 @@ update-deps:
 	cd app && ./gradlew refreshVersions
 
 json-formatter-play:
-	cd app && asciinema play ./app/src/main/resources/jsonDiff.cast
+	asciinema play ./app/src/main/resources/jsonDiff.cast
 
 plain-formatter-play:
-	cd app && asciinema play ./app/src/main/resources/plainDiff.cast
+	asciinema play ./app/src/main/resources/plainDiff.cast
 
 stylish-formatter-play:
-	cd app && asciinema play ./app/src/main/resources/stylishDiff.cast
+	asciinema play ./app/src/main/resources/stylishDiff.cast
 
 yml-formatter-play:
-	cd app && asciinema play ./app/src/main/resources/ymlDiff.cast
+	asciinema play ./app/src/main/resources/ymlDiff.cast
 
 
 build-run: build run

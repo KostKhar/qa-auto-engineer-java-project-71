@@ -1,6 +1,6 @@
 package hexlet.code;
 
-import hexlet.code.formatters.JsonFormatter;
+import hexlet.code.formatters.Json;
 import hexlet.code.formatters.Plain;
 import hexlet.code.formatters.Stylish;
 
@@ -8,8 +8,8 @@ import java.util.Map;
 
 import static hexlet.code.FileParser.parse;
 
-public final class Differ {
-    private Differ() {
+public final class Formatter {
+    private Formatter() {
     }
 
     public static String generate(String filepath1, String filepath2, String formateName) {
@@ -22,7 +22,7 @@ public final class Differ {
         } else if ("plain".equalsIgnoreCase(formateName)) {
             diff = Plain.generateDiff(data1, data2);
         } else if ("json".equalsIgnoreCase(formateName)) {
-            diff = JsonFormatter.generateDiff(data1, data2);
+            diff = Json.generateDiff(data1, data2);
         } else {
             throw new IllegalArgumentException("Unknown format: " + formateName);
         }
