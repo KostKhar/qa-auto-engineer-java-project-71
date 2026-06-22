@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public final class JsonFormatter {
+public final class Json {
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
-    private JsonFormatter() {
+    private Json() {
     }
 
     public static String generateDiff(Map<String, Object> data1,
