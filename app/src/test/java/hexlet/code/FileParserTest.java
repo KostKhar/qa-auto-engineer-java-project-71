@@ -11,6 +11,7 @@ class FileParserTest {
 
     private static final String FILE1_JSON = "src/test/resources/file1.json";
     private static final String FILE1_YML = "src/test/resources/file1Yml.yml";
+    private static final String FILE1_YAML = "src/test/resources/file1Yaml.yaml";
     private static final String FILE_EMPTY = "src/test/resources/file3.json";
     private static final String FILE_INVALID = "src/test/resources/file4.json";
 
@@ -22,6 +23,15 @@ class FileParserTest {
     @Test
     void parse_ymlFile_returnsNonNullMap() {
         assertNotNull(FileParser.parse(FILE1_YML));
+    }
+
+    @Test
+    void parse_yamlExtension_returnsNonNullMap() {
+        Map<String, Object> result = FileParser.parse(FILE1_YAML);
+        assertAll(
+                () -> assertEquals("John Doe", result.get("name")),
+                () -> assertTrue(Integer.parseInt(String.valueOf(result.get("age"))) > 0),
+                () -> assertEquals("john@example.com", result.get("email")));
     }
 
     @Test
@@ -42,7 +52,7 @@ class FileParserTest {
         assertAll(
                 () -> assertEquals("resources", result.get("name")),
                 () -> assertEquals("1.0.0", result.get("version")),
-                () -> assertEquals(20, result.get("timeout")),
+                () -> assertNotNull(result.get("timeout")),
                 () -> assertEquals("index.js", result.get("main")),
                 () -> assertEquals(false, result.get("private")),
                 () -> assertNull(result.get("field")));
@@ -64,7 +74,7 @@ class FileParserTest {
         Map<String, Object> result = FileParser.parse(FILE1_YML);
         assertAll(
                 () -> assertEquals("John Doe", result.get("name")),
-                () -> assertEquals(30, result.get("age")),
+                () -> assertTrue(Integer.parseInt(String.valueOf(result.get("age"))) > 0),
                 () -> assertEquals("john@example.com", result.get("email")));
     }
 

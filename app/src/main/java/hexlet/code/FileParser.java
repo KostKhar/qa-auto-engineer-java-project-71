@@ -19,8 +19,6 @@ public final class FileParser {
             String content = Files.readString(absolutePath);
             String format = resolveFormat(absolutePath.getFileName().toString());
             return Parser.parse(content, format);
-        } catch (IllegalArgumentException e) {
-            throw e;
         } catch (Exception e) {
             throw new IllegalArgumentException("Error reading file: " + e.getMessage());
         }
