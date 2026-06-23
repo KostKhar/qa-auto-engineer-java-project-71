@@ -13,12 +13,6 @@ application {
 group = "hexlet.code"
 version = "1.0-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
 val picocliVersion = "4.7.7"
 val jacksonVersion = "2.20.2"
 val junitVersion = "5.10.0"
