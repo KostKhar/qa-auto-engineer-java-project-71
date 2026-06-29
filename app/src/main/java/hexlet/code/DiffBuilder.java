@@ -25,19 +25,23 @@ public final class DiffBuilder {
         return diff;
     }
 
-    public static Map<String, Object> toJsonMap(List<DiffNode> diff) {
-        Map<String, Object> result = new LinkedHashMap<>();
+    public static List<Map<String, Object>> toJsonMap(List<DiffNode> diff) {
+        List<Map<String, Object>> result = new ArrayList<>();
         for (DiffNode node : diff) {
-            result.put(node.getKey(), toJsonValue(node));
+            result.add(nodeToMap(node));
         }
         return result;
     }
 
-    private static Object toJsonValue(DiffNode node) {
-        if ("changed".equals(node.getType())) {
-            return node.getPreviousValue() + ", " + node.getValue();
+    private static Map<String, Object> nodeToMap(DiffNode node) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("key", node.getKey());
+        map.put("type", node.getType());
+        map.put("value", node.getValue());
+        if (node.getPreviousValue() != null) {
+            map.put("previousValue", node.getPreviousValue());
         }
-        return node.getValue();
+        return map;
     }
 
     private static DiffNode buildNode(String key, Map<String, Object> data1, Map<String, Object> data2) {

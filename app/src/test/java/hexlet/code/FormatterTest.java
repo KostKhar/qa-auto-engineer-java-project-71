@@ -147,14 +147,14 @@ class FormatterTest extends BaseTest {
     void format_jsonFiles_json_containsUnchangedFieldsWithOriginalValues() {
         String result = format(file1Json, file2Json, JSON_FORMAT);
         assertAll(
-                () -> assertTrue(result.contains("\"main\" : \"index.js\"")),
-                () -> assertTrue(result.contains("\"name\" : \"resources\"")),
-                () -> assertTrue(result.contains("\"version\" : \"1.0.0\"")));
+                () -> assertTrue(result.contains("\"key\":\"main\",\"type\":\"unchanged\",\"value\":\"index.js\"")),
+                () -> assertTrue(result.contains("\"key\":\"name\",\"type\":\"unchanged\",\"value\":\"resources\"")),
+                () -> assertTrue(result.contains("\"key\":\"version\",\"type\":\"unchanged\",\"value\":\"1.0.0\"")));
     }
 
     @Test
     void format_twoEmptyJsonFiles_json_returnsEmptyObject() {
-        assertEquals("{ }", format(file3Empty, file3Empty, JSON_FORMAT));
+        assertEquals("[]", format(file3Empty, file3Empty, JSON_FORMAT));
     }
 
     @Test

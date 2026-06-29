@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +22,7 @@ public final class Parser {
     private Parser() {
     }
 
-    public static Map<String, Object> parse(String content, String format) throws Exception {
+    public static Map<String, Object> parse(String content, String format) throws IllegalArgumentException, JsonProcessingException {
         if (content == null) {
             throw new IllegalArgumentException("Content must not be null");
         }

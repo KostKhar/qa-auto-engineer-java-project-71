@@ -26,16 +26,7 @@ class JsonTest extends BaseTest {
     @Test
     void jsonFiles_returnsExpectedDiff() {
         String expected = """
-                {
-                  "description" : "",
-                  "field" : null,
-                  "main" : "index.js",
-                  "name" : "resources",
-                  "private" : "false, true",
-                  "proxy" : "123.234.53.22",
-                  "timeout" : "20, 50",
-                  "version" : "1.0.0"
-                }""";
+                [{"key":"description","type":"deleted","value":""},{"key":"field","type":"deleted","value":null},{"key":"main","type":"unchanged","value":"index.js"},{"key":"name","type":"unchanged","value":"resources"},{"key":"private","type":"changed","value":true,"previousValue":false},{"key":"proxy","type":"added","value":"123.234.53.22"},{"key":"timeout","type":"changed","value":50,"previousValue":20},{"key":"version","type":"unchanged","value":"1.0.0"}]""";
         assertEquals(expected, resultJson);
     }
 
@@ -49,44 +40,28 @@ class JsonTest extends BaseTest {
     @Test
     void jsonFiles_unchangedFieldsKeepOriginalValues() {
         assertAll(
-                () -> assertTrue(resultJson.contains("\"main\" : \"index.js\"")),
-                () -> assertTrue(resultJson.contains("\"name\" : \"resources\"")),
-                () -> assertTrue(resultJson.contains("\"version\" : \"1.0.0\"")));
+                () -> assertTrue(resultJson.contains("\"key\":\"main\",\"type\":\"unchanged\",\"value\":\"index.js\"")),
+                () -> assertTrue(resultJson.contains("\"key\":\"name\",\"type\":\"unchanged\",\"value\":\"resources\"")),
+                () -> assertTrue(resultJson.contains("\"key\":\"version\",\"type\":\"unchanged\",\"value\":\"1.0.0\"")));
     }
 
     @Test
     void checkOneEmptyJsonFile() {
         String result = generateDiff(file1Json, file3Empty);
         String expected = """
-                {
-                  "description" : "",
-                  "field" : null,
-                  "main" : "index.js",
-                  "name" : "resources",
-                  "private" : false,
-                  "timeout" : 20,
-                  "version" : "1.0.0"
-                }""";
+                [{"key":"description","type":"deleted","value":""},{"key":"field","type":"deleted","value":null},{"key":"main","type":"deleted","value":"index.js"},{"key":"name","type":"deleted","value":"resources"},{"key":"private","type":"deleted","value":false},{"key":"timeout","type":"deleted","value":20},{"key":"version","type":"deleted","value":"1.0.0"}]""";
         assertEquals(expected, result);
     }
 
     @Test
     void checkTwoEmptyJsonFiles() {
-        assertEquals("{ }", generateDiff(file3Empty, file3Empty));
+        assertEquals("[]", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void checkEqualJsonFiles() {
         String expected = """
-                {
-                  "description" : "",
-                  "field" : null,
-                  "main" : "index.js",
-                  "name" : "resources",
-                  "private" : false,
-                  "timeout" : 20,
-                  "version" : "1.0.0"
-                }""";
+                [{"key":"description","type":"unchanged","value":""},{"key":"field","type":"unchanged","value":null},{"key":"main","type":"unchanged","value":"index.js"},{"key":"name","type":"unchanged","value":"resources"},{"key":"private","type":"unchanged","value":false},{"key":"timeout","type":"unchanged","value":20},{"key":"version","type":"unchanged","value":"1.0.0"}]""";
         assertEquals(expected, generateDiff(file1Json, file1Json));
     }
 
@@ -98,13 +73,13 @@ class JsonTest extends BaseTest {
     @Test
     void checkYmlFiles_containsChangedAndUnchangedFields() {
         assertAll(
-                () -> assertTrue(resultYml.contains("\"email\" : \"john@example.com\"")),
-                () -> assertTrue(resultYml.contains("\"age\" : \"30, 20\"")),
-                () -> assertTrue(resultYml.contains("\"name\" : \"John Doe, John\"")),
+                () -> assertTrue(resultYml.contains("\"key\":\"email\",\"type\":\"unchanged\",\"value\":\"john@example.com\"")),
+                () -> assertTrue(resultYml.contains("\"key\":\"age\",\"type\":\"changed\",\"value\":20,\"previousValue\":30")),
+                () -> assertTrue(resultYml.contains("\"key\":\"name\",\"type\":\"changed\",\"value\":\"John\",\"previousValue\":\"John Doe\"")),
                 () -> assertTrue(resultYml.contains(
-                        "\"address\" : \"{street=Main St, city=New York, zip=10001}, {street=Steals St, city=New York, zip=10001}\"")),
+                        "\"key\":\"address\",\"type\":\"changed\",\"value\":{\"street\":\"Steals St\",\"city\":\"New York\",\"zip\":10001},\"previousValue\":{\"street\":\"Main St\",\"city\":\"New York\",\"zip\":10001}")),
                 () -> assertTrue(resultYml.contains(
-                        "\"hobbies\" : \"[reading, swimming, coding], [reading, coding]\"")));
+                        "\"key\":\"hobbies\",\"type\":\"changed\",\"value\":[\"reading\",\"coding\"],\"previousValue\":[\"reading\",\"swimming\",\"coding\"]")));
     }
 
     @Test
@@ -118,27 +93,27 @@ class JsonTest extends BaseTest {
     void checkOneEmptyYmlFile() {
         String result = generateDiff(file1Yml, file3Empty);
         assertAll(
-                () -> assertTrue(result.contains("\"name\" : \"John Doe\"")),
-                () -> assertTrue(result.contains("\"age\" : 30")),
-                () -> assertTrue(result.contains("\"email\" : \"john@example.com\"")),
-                () -> assertTrue(result.contains("\"street\" : \"Main St\"")),
-                () -> assertTrue(result.contains("[ \"reading\", \"swimming\", \"coding\" ]")));
+                () -> assertTrue(result.contains("\"key\":\"name\",\"type\":\"deleted\",\"value\":\"John Doe\"")),
+                () -> assertTrue(result.contains("\"key\":\"age\",\"type\":\"deleted\",\"value\":30")),
+                () -> assertTrue(result.contains("\"key\":\"email\",\"type\":\"deleted\",\"value\":\"john@example.com\"")),
+                () -> assertTrue(result.contains("\"street\":\"Main St\"")),
+                () -> assertTrue(result.contains("[\"reading\",\"swimming\",\"coding\"]")));
     }
 
     @Test
     void checkTwoEmptyYmlFiles() {
-        assertEquals("{ }", generateDiff(file3Empty, file3Empty));
+        assertEquals("[]", generateDiff(file3Empty, file3Empty));
     }
 
     @Test
     void checkEqualYmlFiles() {
         String result = generateDiff(file1Yml, file1Yml);
         assertAll(
-                () -> assertTrue(result.contains("\"name\" : \"John Doe\"")),
-                () -> assertTrue(result.contains("\"age\" : 30")),
-                () -> assertTrue(result.contains("\"email\" : \"john@example.com\"")),
-                () -> assertFalse(result.contains("John DoeJohn")),
-                () -> assertFalse(result.contains("3020")));
+                () -> assertTrue(result.contains("\"key\":\"name\",\"type\":\"unchanged\",\"value\":\"John Doe\"")),
+                () -> assertTrue(result.contains("\"key\":\"age\",\"type\":\"unchanged\",\"value\":30")),
+                () -> assertTrue(result.contains("\"key\":\"email\",\"type\":\"unchanged\",\"value\":\"john@example.com\"")),
+                () -> assertFalse(result.contains("previousValue")),
+                () -> assertFalse(result.contains("John DoeJohn")));
     }
 
     @Test
