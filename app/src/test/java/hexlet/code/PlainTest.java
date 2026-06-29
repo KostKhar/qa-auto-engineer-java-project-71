@@ -12,9 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlainTest extends BaseTest {
 
     String generateDiff(String file1, String file2) {
-        Map<String, Object> data1 = parse(file1);
-        Map<String, Object> data2 = parse(file2);
-        return Plain.generateDiff(data1, data2);
+        return Plain.render(DiffBuilder.build(parse(file1), parse(file2)));
     }
 
     @Test
@@ -129,6 +127,6 @@ class PlainTest extends BaseTest {
 
         assertEquals(
                 "Property 'field' was added with value: null",
-                Plain.generateDiff(data1, data2));
+                Plain.render(DiffBuilder.build(data1, data2)));
     }
 }

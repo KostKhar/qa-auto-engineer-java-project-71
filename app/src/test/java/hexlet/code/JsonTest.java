@@ -3,17 +3,19 @@ package hexlet.code;
 import hexlet.code.formatters.Json;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import static hexlet.code.FileParser.parse;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonTest extends BaseTest {
 
     String generateDiff(String file1, String file2) {
-        Map<String, Object> data1 = parse(file1);
-        Map<String, Object> data2 = parse(file2);
-        return Json.generateDiff(data1, data2);
+        try {
+            return Json.render(DiffBuilder.toJsonMap(DiffBuilder.build(parse(file1), parse(file2))));
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -95,7 +97,6 @@ class JsonTest extends BaseTest {
 
     @Test
     void checkYmlFiles_containsChangedAndUnchangedFields() {
-        System.out.println(resultYml);
         assertAll(
                 () -> assertTrue(resultYml.contains("\"email\" : \"john@example.com\"")),
                 () -> assertTrue(resultYml.contains("\"age\" : \"30, 20\"")),

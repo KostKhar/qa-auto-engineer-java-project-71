@@ -10,36 +10,29 @@ class FormatterTest extends BaseTest {
     private static final String PLAIN_FORMAT = "plain";
     private static final String JSON_FORMAT = "json";
 
+    private String format(String file1, String file2, String formatName) {
+        return Formatter.format(
+                formatName,
+                DiffBuilder.build(FileParser.parse(file1), FileParser.parse(file2)));
+    }
+
+    private String format(String file1, String file2) {
+        return format(file1, file2, DEFAULT_FORMAT);
+    }
 
     @Override
     String generateDiff(String file1, String file2) {
-        try {
-            return Formatter.generate(file1, file2, DEFAULT_FORMAT);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return format(file1, file2, DEFAULT_FORMAT);
     }
 
     @Test
-    void generate_defaultFormat_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Json, file2Json));
+    void format_stylish_resultNotNull() {
+        assertNotNull(format(file1Json, file2Json, DEFAULT_FORMAT));
     }
 
     @Test
-    void generate_defaultFormat_equalsExplicitStylish() {
-        assertEquals(
-                Formatter.generate(file1Json, file2Json, "stylish"),
-                Formatter.generate(file1Json, file2Json));
-    }
-
-    @Test
-    void generate_jsonFiles_stylish_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Json, file2Json, DEFAULT_FORMAT));
-    }
-
-    @Test
-    void generate_jsonFiles_stylish_returnsExpectedDiff() {
-        String result = Formatter.generate(file1Json, file2Json, DEFAULT_FORMAT);
+    void format_jsonFiles_stylish_returnsExpectedDiff() {
+        String result = format(file1Json, file2Json);
 
         assertAll(
                 () -> assertTrue(result.contains("- description:"), "- description: not found"),
@@ -55,8 +48,8 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_jsonFiles_stylish_containsUnchangedFields() {
-        String result = Formatter.generate(file1Json, file2Json, DEFAULT_FORMAT);
+    void format_jsonFiles_stylish_containsUnchangedFields() {
+        String result = format(file1Json, file2Json);
         assertAll(
                 () -> assertTrue(result.contains("    main: index.js")),
                 () -> assertTrue(result.contains("    name: resources")),
@@ -64,8 +57,8 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_oneEmptyJsonFile_stylish_allRemovedMarkers() {
-        String result = Formatter.generate(file1Json, file3Empty, DEFAULT_FORMAT);
+    void format_oneEmptyJsonFile_stylish_allRemovedMarkers() {
+        String result = format(file1Json, file3Empty, DEFAULT_FORMAT);
         assertAll(
                 () -> assertTrue(result.contains("  - description: ")),
                 () -> assertTrue(result.contains("  - field: null")),
@@ -77,37 +70,37 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_twoEmptyJsonFiles_stylish_returnsEmptyBraces() {
-        assertEquals("{\n}", Formatter.generate(file3Empty, file3Empty, DEFAULT_FORMAT));
+    void format_twoEmptyJsonFiles_stylish_returnsEmptyBraces() {
+        assertEquals("{\n}", format(file3Empty, file3Empty));
     }
 
     @Test
-    void generate_equalJsonFiles_stylish_noChangedMarkers() {
-        String result = Formatter.generate(file1Json, file1Json, DEFAULT_FORMAT);
+    void format_equalJsonFiles_stylish_noChangedMarkers() {
+        String result = format(file1Json, file1Json, DEFAULT_FORMAT);
         assertAll(
                 () -> assertFalse(result.contains("  - ")),
                 () -> assertFalse(result.contains("  + ")));
     }
 
     @Test
-    void generate_jsonFiles_plain_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Json, file2Json, PLAIN_FORMAT));
+    void format_jsonFiles_plain_resultNotNull() {
+        assertNotNull(format(file1Json, file2Json, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_jsonFiles_plain_returnsExpectedDiff() {
+    void format_jsonFiles_plain_returnsExpectedDiff() {
         String expected = """
                 Property 'description' was removed
                 Property 'field' was removed
                 Property 'private' was updated. From false to true
                 Property 'proxy' was added with value: '123.234.53.22'
                 Property 'timeout' was updated. From 20 to 50""";
-        assertEquals(expected, Formatter.generate(file1Json, file2Json, PLAIN_FORMAT));
+        assertEquals(expected, format(file1Json, file2Json, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_jsonFiles_plain_doesNotContainUnchangedFields() {
-        String result = Formatter.generate(file1Json, file2Json, PLAIN_FORMAT);
+    void format_jsonFiles_plain_doesNotContainUnchangedFields() {
+        String result = format(file1Json, file2Json, PLAIN_FORMAT);
         assertAll(
                 () -> assertFalse(result.contains("main")),
                 () -> assertFalse(result.contains("name")),
@@ -115,8 +108,8 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_oneEmptyJsonFile_plain_allRemovedMessages() {
-        String result = Formatter.generate(file1Json, file3Empty, PLAIN_FORMAT);
+    void format_oneEmptyJsonFile_plain_allRemovedMessages() {
+        String result = format(file1Json, file3Empty, PLAIN_FORMAT);
         assertAll(
                 () -> assertTrue(result.contains("Property 'description' was removed")),
                 () -> assertTrue(result.contains("Property 'field' was removed")),
@@ -128,31 +121,31 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_twoEmptyJsonFiles_plain_returnsEmptyBraces() {
-        assertEquals("", Formatter.generate(file3Empty, file3Empty, PLAIN_FORMAT));
+    void format_twoEmptyJsonFiles_plain_returnsEmptyString() {
+        assertEquals("", format(file3Empty, file3Empty, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_equalJsonFiles_plain_returnsEmptyBraces() {
-        assertEquals("", Formatter.generate(file1Json, file1Json, PLAIN_FORMAT));
+    void format_equalJsonFiles_plain_returnsEmptyString() {
+        assertEquals("", format(file1Json, file1Json, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_jsonFiles_json_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Json, file2Json, JSON_FORMAT));
+    void format_jsonFiles_json_resultNotNull() {
+        assertNotNull(format(file1Json, file2Json, JSON_FORMAT));
     }
 
     @Test
-    void generate_jsonFiles_json_doesNotContainStylishMarkers() {
-        String result = Formatter.generate(file1Json, file2Json, JSON_FORMAT);
+    void format_jsonFiles_json_doesNotContainStylishMarkers() {
+        String result = format(file1Json, file2Json, JSON_FORMAT);
         assertAll(
                 () -> assertFalse(result.contains("+ ")),
                 () -> assertFalse(result.contains("- ")));
     }
 
     @Test
-    void generate_jsonFiles_json_containsUnchangedFieldsWithOriginalValues() {
-        String result = Formatter.generate(file1Json, file2Json, JSON_FORMAT);
+    void format_jsonFiles_json_containsUnchangedFieldsWithOriginalValues() {
+        String result = format(file1Json, file2Json, JSON_FORMAT);
         assertAll(
                 () -> assertTrue(result.contains("\"main\" : \"index.js\"")),
                 () -> assertTrue(result.contains("\"name\" : \"resources\"")),
@@ -160,17 +153,17 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_twoEmptyJsonFiles_json_returnsEmptyObject() {
-        assertEquals("{ }", Formatter.generate(file3Empty, file3Empty, JSON_FORMAT));
+    void format_twoEmptyJsonFiles_json_returnsEmptyObject() {
+        assertEquals("{ }", format(file3Empty, file3Empty, JSON_FORMAT));
     }
 
     @Test
-    void generate_ymlFiles_stylish_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Yml, file2Yml, DEFAULT_FORMAT));
+    void format_ymlFiles_stylish_resultNotNull() {
+        assertNotNull(format(file1Yml, file2Yml, DEFAULT_FORMAT));
     }
 
     @Test
-    void generate_ymlFiles_stylish_returnsExpectedDiff() {
+    void format_ymlFiles_stylish_returnsExpectedDiff() {
         String expected = """
                 {
                   - address: {street=Main St, city=New York, zip=10001}
@@ -183,12 +176,12 @@ class FormatterTest extends BaseTest {
                   - name: John Doe
                   + name: John
                 }""";
-        assertEquals(expected, Formatter.generate(file1Yml, file2Yml, DEFAULT_FORMAT));
+        assertEquals(expected, format(file1Yml, file2Yml, DEFAULT_FORMAT));
     }
 
     @Test
-    void generate_oneEmptyYmlFile_stylish_allRemovedMarkers() {
-        String result = Formatter.generate(file1Yml, file3Empty, DEFAULT_FORMAT);
+    void format_oneEmptyYmlFile_stylish_allRemovedMarkers() {
+        String result = format(file1Yml, file3Empty, DEFAULT_FORMAT);
         assertAll(
                 () -> assertTrue(result.contains("  - address: {street=Main St, city=New York, zip=10001}")),
                 () -> assertTrue(result.contains("  - age: 30")),
@@ -198,95 +191,82 @@ class FormatterTest extends BaseTest {
     }
 
     @Test
-    void generate_twoEmptyYmlFiles_stylish_returnsEmptyBraces() {
-        assertEquals("{\n}", Formatter.generate(file3Empty, file3Empty, DEFAULT_FORMAT));
+    void format_twoEmptyYmlFiles_stylish_returnsEmptyBraces() {
+        assertEquals("{\n}", format(file3Empty, file3Empty, DEFAULT_FORMAT));
     }
 
     @Test
-    void generate_equalYmlFiles_stylish_noChangedMarkers() {
-        String result = Formatter.generate(file1Yml, file1Yml, DEFAULT_FORMAT);
+    void format_equalYmlFiles_stylish_noChangedMarkers() {
+        String result = format(file1Yml, file1Yml, DEFAULT_FORMAT);
         assertAll(
                 () -> assertFalse(result.contains("  - ")),
                 () -> assertFalse(result.contains("  + ")));
     }
 
     @Test
-    void generate_ymlFiles_plain_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Yml, file2Yml, PLAIN_FORMAT));
+    void format_ymlFiles_plain_resultNotNull() {
+        assertNotNull(format(file1Yml, file2Yml, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_ymlFiles_plain_returnsExpectedDiff() {
+    void format_ymlFiles_plain_returnsExpectedDiff() {
         String expected = """
                 Property 'address' was updated. From [complex value] to [complex value]
                 Property 'age' was updated. From 30 to 20
                 Property 'hobbies' was updated. From [complex value] to [complex value]
                 Property 'name' was updated. From 'John Doe' to 'John'""";
-        assertEquals(expected, Formatter.generate(file1Yml, file2Yml, PLAIN_FORMAT));
+        assertEquals(expected, format(file1Yml, file2Yml, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_ymlFiles_plain_doesNotContainUnchangedFields() {
-        assertFalse(Formatter.generate(file1Yml, file2Yml, PLAIN_FORMAT).contains("email"));
+    void format_ymlFiles_plain_doesNotContainUnchangedFields() {
+        assertFalse(format(file1Yml, file2Yml, PLAIN_FORMAT).contains("email"));
     }
 
     @Test
-    void generate_equalYmlFiles_plain_returnsEmptyBraces() {
-        assertEquals("", Formatter.generate(file1Yml, file1Yml, PLAIN_FORMAT));
+    void format_equalYmlFiles_plain_returnsEmptyString() {
+        assertEquals("", format(file1Yml, file1Yml, PLAIN_FORMAT));
     }
 
     @Test
-    void generate_ymlFiles_json_resultNotNull() {
-        assertNotNull(Formatter.generate(file1Yml, file2Yml, JSON_FORMAT));
+    void format_ymlFiles_json_resultNotNull() {
+        assertNotNull(format(file1Yml, file2Yml, JSON_FORMAT));
     }
 
     @Test
-    void generate_ymlFiles_json_doesNotContainStylishMarkers() {
-        String result = Formatter.generate(file1Yml, file2Yml, JSON_FORMAT);
+    void format_ymlFiles_json_doesNotContainStylishMarkers() {
+        String result = format(file1Yml, file2Yml, JSON_FORMAT);
         assertAll(
                 () -> assertFalse(result.contains("+ ")),
                 () -> assertFalse(result.contains("- ")));
     }
 
     @Test
-    void generate_formatCaseInsensitive_stylish() {
+    void format_formatCaseInsensitive_stylish() {
         assertEquals(
-                Formatter.generate(file1Json, file2Json, DEFAULT_FORMAT),
-                Formatter.generate(file1Json, file2Json, "STYLISH"));
+                format(file1Json, file2Json, DEFAULT_FORMAT),
+                format(file1Json, file2Json, "STYLISH"));
     }
 
     @Test
-    void generate_formatCaseInsensitive_plain() {
+    void format_formatCaseInsensitive_plain() {
         assertEquals(
-                Formatter.generate(file1Json, file2Json, PLAIN_FORMAT),
-                Formatter.generate(file1Json, file2Json, "PLAIN"));
+                format(file1Json, file2Json, PLAIN_FORMAT),
+                format(file1Json, file2Json, "PLAIN"));
     }
 
     @Test
-    void generate_formatCaseInsensitive_json() {
+    void format_formatCaseInsensitive_json() {
         assertEquals(
-                Formatter.generate(file1Json, file2Json, JSON_FORMAT),
-                Formatter.generate(file1Json, file2Json, JSON_FORMAT));
+                format(file1Json, file2Json, JSON_FORMAT),
+                format(file1Json, file2Json, "JSON"));
     }
 
     @Test
-    void generate_unknownFormat_throwsIllegalArgumentException() {
+    void format_unknownFormat_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> Formatter.generate(file1Json, file2Json, "unknown"));
-    }
-
-    @Test
-    void getData_jsonFile_returnsNonNullMap() {
-        assertNotNull(Formatter.getData(file1Json));
-    }
-
-    @Test
-    void getData_ymlFile_returnsNonNullMap() {
-        assertNotNull(Formatter.getData(file1Yml));
-    }
-
-    @Test
-    void getData_emptyFile_returnsEmptyMap() {
-        assertTrue(Formatter.getData(file3Empty).isEmpty());
+                () -> Formatter.format(
+                        "unknown",
+                        DiffBuilder.build(FileParser.parse(file1Json), FileParser.parse(file2Json))));
     }
 }

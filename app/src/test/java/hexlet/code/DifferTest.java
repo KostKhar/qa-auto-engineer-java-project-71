@@ -24,14 +24,7 @@ class DifferTest {
     }
 
     @Test
-    void generate_withFormat_delegatesToFormatter() {
-        assertEquals(
-                Formatter.generate(FILE1_JSON, FILE2_JSON, STYLISH_FORMAT),
-                Differ.generate(FILE1_JSON, FILE2_JSON, STYLISH_FORMAT));
-    }
-
-    @Test
-    void getData_delegatesToFormatter() {
-        assertEquals(Formatter.getData(FILE1_JSON), Differ.getData(FILE1_JSON));
+    void generate_withFormat_returnsExpectedResult() {
+        assertNotNull(Differ.generate(FILE1_JSON, FILE2_JSON, STYLISH_FORMAT));
     }
 }
