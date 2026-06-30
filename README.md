@@ -57,20 +57,23 @@ gendiff [-hV] [-f=<formatName>] <filepath1> <filepath2>
   make update
 ```
 
-```bash
-  make stylish-formatter-play
-```
+## Демонстрации (asciinema)
 
-```bash
-  make json-formatter-play
+- [stylish](https://asciinema.org/a/UtvyELlC5BOAjfyV) — формат `stylish` 
+``` bash 
+    make stylish-formatter-play
 ```
-
-```bash
-  make plain-formatter-play
+- [json](https://asciinema.org/a/ysJDG9CQNkbDKaLl) — формат `json`
+``` bash 
+    make json-formatter-play
 ```
-
-```bash
-  make yml-formatter-play
+- [plain](https://asciinema.org/a/LgCTbF5C5SN486T2) — формат `plain`
+``` bash 
+    make plain-formatter-play
+```
+- [yml](https://asciinema.org/a/fUYe7XFJ5S6bjZFQ) — сравнение YAML-файлов
+``` bash 
+    make yml-formatter-play
 ```
 
 

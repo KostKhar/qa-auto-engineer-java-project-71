@@ -13,9 +13,7 @@ class StylishTest extends BaseTest {
 
 
     String generateDiff(String file1, String file2) {
-        Map<String, Object> data1 = parse(file1);
-        Map<String, Object> data2 = parse(file2);
-        return Stylish.generateDiff(data1, data2);
+        return Stylish.render(DiffBuilder.build(parse(file1), parse(file2)));
     }
 
     @Test
@@ -146,7 +144,7 @@ class StylishTest extends BaseTest {
         Map<String, Object> data2 = new HashMap<>();
         data2.put("key2", "value2");
 
-        String result = Stylish.generateDiff(data1, data2);
+        String result = Stylish.render(DiffBuilder.build(data1, data2));
 
         assertTrue(result.contains("  + key2: value2"));
     }
@@ -157,7 +155,7 @@ class StylishTest extends BaseTest {
         Map<String, Object> data2 = new HashMap<>();
         data1.put("key1", "value1");
 
-        String result = Stylish.generateDiff(data1, data2);
+        String result = Stylish.render(DiffBuilder.build(data1, data2));
 
         assertTrue(result.contains("  - key1: value1"));
     }
@@ -169,7 +167,7 @@ class StylishTest extends BaseTest {
         data1.put("key", "oldValue");
         data2.put("key", "newValue");
 
-        String result = Stylish.generateDiff(data1, data2);
+        String result = Stylish.render(DiffBuilder.build(data1, data2));
 
         assertAll(
                 () -> assertTrue(result.contains("  - key: oldValue")),
@@ -183,7 +181,7 @@ class StylishTest extends BaseTest {
         data1.put("key", "sameValue");
         data2.put("key", "sameValue");
 
-        String result = Stylish.generateDiff(data1, data2);
+        String result = Stylish.render(DiffBuilder.build(data1, data2));
         assertAll(
                 () -> assertTrue(result.contains("    key: sameValue")),
                 () -> assertFalse(result.contains("  - key")),
@@ -203,7 +201,7 @@ class StylishTest extends BaseTest {
         nested2.put("inner", "value2");
         data2.put("nested", nested2);
 
-        String result = Stylish.generateDiff(data1, data2);
+        String result = Stylish.render(DiffBuilder.build(data1, data2));
         assertAll(
                 () -> assertTrue(result.contains("  - nested: {inner=value1}")),
                 () -> assertTrue(result.contains("  + nested: {inner=value2}")));
@@ -216,7 +214,7 @@ class StylishTest extends BaseTest {
         data1.put("key", null);
         data2.put("key", "value");
 
-        String result = Stylish.generateDiff(data1, data2);
+        String result = Stylish.render(DiffBuilder.build(data1, data2));
 
         assertAll(
                 () -> assertTrue(result.contains("  - key: null")),
