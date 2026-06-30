@@ -25,11 +25,16 @@ class JsonTest extends BaseTest {
 
     @Test
     void jsonFiles_returnsExpectedDiff() {
-        String expected = """
-                [{"key":"description","type":"deleted","value":""},{"key":"field","type":"deleted","value":null},
-                {"key":"main","type":"unchanged","value":"index.js"},{"key":"name","type":"unchanged","value":"resources"},
-                {"key":"private","type":"changed","value":true,"previousValue":false},{"key":"proxy","type":"added","value":"123.234.53.22"},
-                {"key":"timeout","type":"changed","value":50,"previousValue":20},{"key":"version","type":"unchanged","value":"1.0.0"}]""";
+        String expected = "["
+                + "{\"key\":\"description\",\"type\":\"deleted\",\"value\":\"\"},"
+                + "{\"key\":\"field\",\"type\":\"deleted\",\"value\":null},"
+                + "{\"key\":\"main\",\"type\":\"unchanged\",\"value\":\"index.js\"},"
+                + "{\"key\":\"name\",\"type\":\"unchanged\",\"value\":\"resources\"},"
+                + "{\"key\":\"private\",\"type\":\"changed\",\"value\":true,\"previousValue\":false},"
+                + "{\"key\":\"proxy\",\"type\":\"added\",\"value\":\"123.234.53.22\"},"
+                + "{\"key\":\"timeout\",\"type\":\"changed\",\"value\":50,\"previousValue\":20},"
+                + "{\"key\":\"version\",\"type\":\"unchanged\",\"value\":\"1.0.0\"}"
+                + "]";
         assertEquals(expected, resultJson);
     }
 
@@ -51,14 +56,15 @@ class JsonTest extends BaseTest {
     @Test
     void checkOneEmptyJsonFile() {
         String result = generateDiff(file1Json, file3Empty);
-        String expected = """
-                [{"key":"description","type":"deleted","value":""},
-                {"key":"field","type":"deleted","value":null},
-                {"key":"main","type":"deleted","value":"index.js"},
-                {"key":"name","type":"deleted","value":"resources"},
-                {"key":"private","type":"deleted","value":false},
-                {"key":"timeout","type":"deleted","value":20},
-                {"key":"version","type":"deleted","value":"1.0.0"}]""";
+        String expected = "["
+                + "{\"key\":\"description\",\"type\":\"deleted\",\"value\":\"\"},"
+                + "{\"key\":\"field\",\"type\":\"deleted\",\"value\":null},"
+                + "{\"key\":\"main\",\"type\":\"deleted\",\"value\":\"index.js\"},"
+                + "{\"key\":\"name\",\"type\":\"deleted\",\"value\":\"resources\"},"
+                + "{\"key\":\"private\",\"type\":\"deleted\",\"value\":false},"
+                + "{\"key\":\"timeout\",\"type\":\"deleted\",\"value\":20},"
+                + "{\"key\":\"version\",\"type\":\"deleted\",\"value\":\"1.0.0\"}"
+                + "]";
         assertEquals(expected, result);
     }
 
@@ -69,14 +75,15 @@ class JsonTest extends BaseTest {
 
     @Test
     void checkEqualJsonFiles() {
-        String expected = """
-                [{"key":"description","type":"unchanged","value":""},
-                {"key":"field","type":"unchanged","value":null},
-                {"key":"main","type":"unchanged","value":"index.js"},
-                {"key":"name","type":"unchanged","value":"resources"},
-                {"key":"private","type":"unchanged","value":false},
-                {"key":"timeout","type":"unchanged","value":20},
-                {"key":"version","type":"unchanged","value":"1.0.0"}]""";
+        String expected = "["
+                + "{\"key\":\"description\",\"type\":\"unchanged\",\"value\":\"\"},"
+                + "{\"key\":\"field\",\"type\":\"unchanged\",\"value\":null},"
+                + "{\"key\":\"main\",\"type\":\"unchanged\",\"value\":\"index.js\"},"
+                + "{\"key\":\"name\",\"type\":\"unchanged\",\"value\":\"resources\"},"
+                + "{\"key\":\"private\",\"type\":\"unchanged\",\"value\":false},"
+                + "{\"key\":\"timeout\",\"type\":\"unchanged\",\"value\":20},"
+                + "{\"key\":\"version\",\"type\":\"unchanged\",\"value\":\"1.0.0\"}"
+                + "]";
         assertEquals(expected, generateDiff(file1Json, file1Json));
     }
 
